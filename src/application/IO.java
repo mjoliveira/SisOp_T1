@@ -7,26 +7,51 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class IO {
-	public static List<String[]> carregarArquivo(String arquivo) throws IOException{ //Lê os dados do arquivo.
+	
+	public static Data carregarArquivo(String arquivo) throws IOException{ //Lï¿½ os dados do arquivo.
 		
-		List<String[]> lista = new LinkedList<String[]>();
+		Data data = new Data();
+		
+		List<Processo> listaProcessos = new LinkedList<>();
 		
 		FileReader arq = new FileReader(arquivo);
 	    BufferedReader lerArq = new BufferedReader(arq);
 		
-	    int quantidade = Integer.parseInt(lerArq.readLine()); // Lê a primeira linha.
-		int aux = 0;
-		
-		String linha = null;
-		
-		while (aux != quantidade) {   
-			linha = lerArq.readLine();
-			lista.add(linha.split(" ", 4));
-			aux++;
+	 // Lï¿½ a primeira linha.
+	    int quantidadeProcessos = Integer.parseInt(lerArq.readLine()); 
+	    data.quantidadeProcessos = quantidadeProcessos;
+	    
+	 // Lï¿½ a segunda linha.
+	    int fatiaTempo = Integer.parseInt(lerArq.readLine()); 
+	    data.fatiaTempo = fatiaTempo;
+	    
 
-		}
+	 // Lï¿½  todas as outras linhas.
+	    lerArq
+	    	// todas as linhas restantes
+	    	.lines()
+	    	// divide a linha em um vetor de string
+	    	.map(line-> line.split(" "))
+	    	// converte o vetor de string em um vetor de inteiros
+	    	.map(v->{
+	    		Integer[] n = new Integer[v.length];
+	    		for (int i=0; i<v.length; i++)
+	    			n[i] = Integer.parseInt(v[i]); 
+	    		return n;
+	    	})
+	    	// converte um vetor de inteiros em Processo
+	    	.map(v-> new Processo(v))
+	    	// add o processo a lista
+	    	.forEach(n->listaProcessos.add(n));
 		
-		return lista;
+	    // add a lista de processos a Data
+	    data.processos = listaProcessos;
+		
+	    // fecha o arquivo
+	    lerArq.close();
+	    
+		return data;
 		
 	}
+	
 }
