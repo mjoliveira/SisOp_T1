@@ -13,7 +13,8 @@ public class App {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		RoundRoubin round = new RoundRoubin(data);
+		round.start();
 	}
 
 }

@@ -2,12 +2,18 @@ package application;
 
 public class Processo {
 
+	static int codigoGeral = 0;
+	
+	int codigo;
 	int tempoChegada;
 	int tempoExecucao;
 	int prioridade;
 	int tempoAcesso;
 	
 	public Processo(Integer[] processos) {
+		Processo.codigoGeral++;
+		this.codigo = Processo.codigoGeral;
+		
 		this.tempoChegada = processos[0];
 		this.tempoExecucao = processos[1];
 		this.prioridade = processos[2];
