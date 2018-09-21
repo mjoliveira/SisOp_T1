@@ -6,7 +6,7 @@ public class App {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		Data data = null;
+		DadosImportados data = null;
 		try {
 			data = IO.carregarArquivo("teste");
 		} catch (IOException e) {

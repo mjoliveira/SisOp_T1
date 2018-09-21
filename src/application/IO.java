@@ -8,9 +8,9 @@ import java.util.List;
 
 public class IO {
 	
-	public static Data carregarArquivo(String arquivo) throws IOException{ //L� os dados do arquivo.
+	public static DadosImportados carregarArquivo(String arquivo) throws IOException{ //L� os dados do arquivo.
 		
-		Data data = new Data();
+		DadosImportados data = new DadosImportados();
 		
 		List<Processo> listaProcessos = new LinkedList<>();
 		

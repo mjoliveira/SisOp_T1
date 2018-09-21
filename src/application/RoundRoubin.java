@@ -3,44 +3,49 @@ package application;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class RoundRoubin {
 
 	int tempoEntradaSaida;
-	private Data data;
 	int tempo;
-	List<Processo> filaAtualProcessos;
+	List<Processo> filaProcessosRecebidosNoArquivo;
+	Processador processador;
 	
-	public RoundRoubin(Data data) {
-		this.data = data;
+	public RoundRoubin(DadosImportados data) {
 		this.tempoEntradaSaida = 4;
 		this.tempo = 0;
-		this.filaAtualProcessos = new LinkedList<>();
-		this.filaAtualProcessos.addAll(data.processos);
+		this.filaProcessosRecebidosNoArquivo = new LinkedList<>();
+		this.filaProcessosRecebidosNoArquivo.addAll(data.processos);
+		this.processador = new Processador(data.fatiaTempo);
 	}
 	
 	public void start() {
-		List<Processo> processosNaFila = null;
+		List<Processo> processosValidosParaAddNoProcessador = null;
 		Processo p = null;
-		while(!filaAtualProcessos.isEmpty()) {
+		while(!filaProcessosRecebidosNoArquivo.isEmpty()) {
 			tempo++;
 			
-			processosNaFila = filaAtualProcessos
+			Processo processado = processador.processar();
+			
+			if (processado != null && processado.tempoExecucao > 0)
+				filaProcessosRecebidosNoArquivo.add(processado);
+			
+			processosValidosParaAddNoProcessador = filaProcessosRecebidosNoArquivo
 					.stream()
 					.filter(pf -> pf.tempoChegada <= tempo)
 					.sorted((p1,p2) -> p1.prioridade - p2.prioridade)
 					.collect(Collectors.toList());
 			
-			if (processosNaFila.isEmpty()) {
-				System.out.print("-");
+			if (processosValidosParaAddNoProcessador.isEmpty()) {
 				continue;
 			}
 			
-			p = processosNaFila.get(0);
-			System.out.print("-");
+			p = processosValidosParaAddNoProcessador.remove(0);
 			
-			System.out.print(tempo);
+			if (processador.add(p))
+				filaProcessosRecebidosNoArquivo.remove(p);
+			
+			
 		}
 	}
 
