@@ -24,15 +24,18 @@ public class Processador {
 					|| p.prioridade < filaProcessosProcessador.get(0).processo.prioridade) {
 				
 				this.data = new Data(p, this.fatiaTempo);
+
+				trocaDeContexto = true;
+				return true;
 				
 			} else {
 				
 				this.data = filaProcessosProcessador.remove(0);
+
+				trocaDeContexto = true;
+				return false;
 				
 			}
-
-			trocaDeContexto = true;
-			return true;
 						
 		}
 		
