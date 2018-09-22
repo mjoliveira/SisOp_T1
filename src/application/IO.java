@@ -3,8 +3,10 @@ package application;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class IO {
 	
@@ -44,8 +46,19 @@ public class IO {
 	    	// add o processo a lista
 	    	.forEach(n->listaProcessos.add(n));
 		
+	    Map<Integer, List<Processo>> dicionarioProcessos = new HashMap<Integer, List<Processo>>();
+	    listaProcessos.forEach(p -> {
+	    	
+	    	if (dicionarioProcessos.containsKey(p.prioridade) == false) {
+	    		dicionarioProcessos.put(p.prioridade, new LinkedList<>());
+	    	}
+	    	
+	    	dicionarioProcessos.get(p.prioridade).add(p);
+	    	
+	    });
+	    
 	    // add a lista de processos a Data
-	    data.processos = listaProcessos;
+	    data.processos = dicionarioProcessos;
 		
 	    // fecha o arquivo
 	    lerArq.close();
