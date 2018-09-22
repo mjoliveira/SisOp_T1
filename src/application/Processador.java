@@ -16,6 +16,10 @@ public class Processador {
 		this.fatiaTempo = fatiaTempo;
 	}
 	
+	public boolean isEmpty() {
+		return (data == null && filaProcessosProcessador.isEmpty());
+	}
+	
 	public boolean add(Processo p) {
 		
 		if (this.data == null) {

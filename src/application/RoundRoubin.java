@@ -25,7 +25,7 @@ public class RoundRoubin {
 		List<Processo> processosValidosParaAddNoProcessador = null;
 		Processo p = null;
 		
-		while(!dicionarioProcessosRecebidosNoArquivo.isEmpty()) {
+		while(!dicionarioProcessosRecebidosNoArquivo.isEmpty() || !processador.isEmpty()) {
 			tempo++;
 			
 			Processo processado = processador.processar();
