@@ -15,6 +15,15 @@ public class App {
 		}
 		RoundRoubin round = new RoundRoubin(data);
 		round.start();
+		
+		Double mediaTempoResposta = round
+				.processados
+				.stream()
+				.mapToInt(processo -> processo.tempoResposta)
+				.average()
+				.getAsDouble();
+		
+		System.out.println("\ntempo medio de respotas: " + mediaTempoResposta);
 	}
 
 }

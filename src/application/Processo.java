@@ -10,6 +10,8 @@ public class Processo {
 	int prioridade;
 	int tempoAcessoOperacaoES;
 	
+	int tempoResposta;
+	
 	public Processo(Integer[] processos) {
 		Processo.codigoGeral++;
 		this.codigo = Processo.codigoGeral;
@@ -19,5 +21,7 @@ public class Processo {
 		this.prioridade = processos[2];
 		if (processos.length == 4)
 			this.tempoAcessoOperacaoES = processos[3];
+		
+		this.tempoResposta = 0;
 	}
 }

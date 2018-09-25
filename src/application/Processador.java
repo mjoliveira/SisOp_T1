@@ -55,7 +55,7 @@ public class Processador {
 		return true;
 	}
 	
-	public Processo processar() {
+	public Processo processar(int tempo) {
 		processarChamadaSistema();
 		
 		if (trocaDeContexto) {
@@ -68,6 +68,9 @@ public class Processador {
 			this.dadoEmProcessamento.fatiaTempo--;
 			this.dadoEmProcessamento.processo.tempoAcessoOperacaoES--;
 			System.out.print(this.dadoEmProcessamento.processo.codigo);
+			
+			if (this.dadoEmProcessamento.processo.tempoResposta == 0)
+				this.dadoEmProcessamento.processo.tempoResposta = tempo;
 			
 			if (this.dadoEmProcessamento.processo.tempoAcessoOperacaoES == 0) {
 				

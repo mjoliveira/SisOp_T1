@@ -11,6 +11,7 @@ public class RoundRoubin {
 	int tempoEntradaSaida;
 	int tempo;
 	Map<Integer, List<Processo>> dicionarioProcessosRecebidosNoArquivo;
+	List<Processo> processados;
 	Processador processador;
 	
 	public RoundRoubin(DadosImportados data) {
@@ -18,6 +19,7 @@ public class RoundRoubin {
 		this.tempo = 0;
 		this.dicionarioProcessosRecebidosNoArquivo = data.processos;
 		this.processador = new Processador(data.fatiaTempo);
+		processados = new LinkedList<Processo>();
 	}
 	
 	public void start() {
@@ -28,7 +30,7 @@ public class RoundRoubin {
 		while(!dicionarioProcessosRecebidosNoArquivo.isEmpty() || !processador.isEmpty()) {
 			tempo++;
 			
-			Processo processado = processador.processar();
+			Processo processado = processador.processar(tempo);
 			
 			if (processado != null && processado.tempoExecucao > 0) {
 				
@@ -38,7 +40,8 @@ public class RoundRoubin {
 				List<Processo> listaProcessos = dicionarioProcessosRecebidosNoArquivo.get(processado.prioridade);
 				listaProcessos.add(processado);
 				
-			}
+			} else if (processado != null)
+				processados.add(processado);
 			
 			processosValidosParaAddNoProcessador = new LinkedList<>();
 			
