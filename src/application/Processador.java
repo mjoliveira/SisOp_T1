@@ -8,7 +8,7 @@ public class Processador {
 
 	List<Data> memoriaProcessosEmEspera;
 	List<Data> memoriaProcessosChamadaDeSistema;
-	Data dadoEmProcessamento;
+	private Data dadoEmProcessamento;
 	Boolean trocaDeContexto;
 	int fatiaTempo;
 	
@@ -32,16 +32,12 @@ public class Processador {
 			if (memoriaProcessosEmEspera.isEmpty() 
 					|| p.prioridade < memoriaProcessosEmEspera.get(0).processo.prioridade) {
 				
-				this.dadoEmProcessamento = new Data(p, this.fatiaTempo);
-
-				trocaDeContexto = true;
+				setDadoEmProcessamento(new Data(p, this.fatiaTempo));
 				return true;
 				
 			} else {
 				
-				this.dadoEmProcessamento = memoriaProcessosEmEspera.remove(0);
-
-				trocaDeContexto = true;
+				setDadoEmProcessamento(memoriaProcessosEmEspera.remove(0));
 				return false;
 				
 			}
@@ -55,8 +51,7 @@ public class Processador {
 		memoriaProcessosEmEspera.add(this.dadoEmProcessamento);
 		memoriaProcessosEmEspera.sort((d1,d2) -> d1.processo.prioridade - d2.processo.prioridade );
 		
-		this.dadoEmProcessamento = new Data(p, this.fatiaTempo);
-		trocaDeContexto = true;
+		setDadoEmProcessamento(new Data(p, this.fatiaTempo));
 		return true;
 	}
 	
@@ -77,14 +72,13 @@ public class Processador {
 			if (this.dadoEmProcessamento.processo.tempoAcessoOperacaoES == 0) {
 				
 				memoriaProcessosChamadaDeSistema.add(this.dadoEmProcessamento);
-				this.dadoEmProcessamento = null;
-				trocaDeContexto = true;
+				setDadoEmProcessamento(null);
 				return null;
 				
 			} else if (this.dadoEmProcessamento.fatiaTempo == 0) {
 				
 				Processo p = this.dadoEmProcessamento.processo;
-				this.dadoEmProcessamento = null;
+				setDadoEmProcessamento(null);
 				return p;
 				
 			} else {
@@ -95,13 +89,17 @@ public class Processador {
 		}
 		
 		if (memoriaProcessosEmEspera.isEmpty() == false) {
-			this.dadoEmProcessamento = memoriaProcessosEmEspera.remove(0);
-			trocaDeContexto = true;
+			setDadoEmProcessamento(memoriaProcessosEmEspera.remove(0));
 		}
 		
 			
 		System.out.print("-");
 		return null;
+	}
+	
+	public void setDadoEmProcessamento(Data dadoEmProcessamento) {
+		this.dadoEmProcessamento = dadoEmProcessamento;
+		trocaDeContexto = true;
 	}
 	
 	public void processarChamadaSistema() {
