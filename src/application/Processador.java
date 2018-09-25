@@ -78,7 +78,12 @@ public class Processador {
 			} else if (this.dadoEmProcessamento.fatiaTempo == 0) {
 				
 				Processo p = this.dadoEmProcessamento.processo;
+<<<<<<< HEAD
 				setDadoEmProcessamento(null);
+=======
+				this.dadoEmProcessamento = null;
+				trocaDeContexto = true;
+>>>>>>> branch 'master' of https://github.com/mjoliveira/SisOp_T1.git
 				return p;
 				
 			} else {
