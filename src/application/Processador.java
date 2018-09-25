@@ -85,6 +85,7 @@ public class Processador {
 				
 				Processo p = this.dadoEmProcessamento.processo;
 				this.dadoEmProcessamento = null;
+				trocaDeContexto = true;
 				return p;
 				
 			} else {
