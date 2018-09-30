@@ -11,13 +11,15 @@ class Processador {
 	private List<Data> memoriaProcessosChamadaDeSistema;
 	private Data dadoEmProcessamento;
 	private Boolean trocaDeContexto;
+	private int tempoEntradaSaida;
 	private int fatiaTempo;
 	
-	Processador(int fatiaTempo) {
+	Processador(int fatiaTempo, int tempoEntradaSaida) {
 		this.memoriaProcessosEmEspera = new LinkedList<>();
 		this.memoriaProcessosChamadaDeSistema = new LinkedList<>();
 		this.trocaDeContexto = false;
 		this.fatiaTempo = fatiaTempo;
+		this.tempoEntradaSaida = tempoEntradaSaida;
 	}
 	
 	boolean isEmpty() {
@@ -33,7 +35,7 @@ class Processador {
 			if (memoriaProcessosEmEspera.isEmpty() 
 					|| p.prioridade < memoriaProcessosEmEspera.get(0).processo.prioridade) {
 				
-				setDadoEmProcessamento(new Data(p, this.fatiaTempo));
+				setDadoEmProcessamento(new Data(p, this.fatiaTempo, this.tempoEntradaSaida));
 				return true;
 				
 			} else {
@@ -52,7 +54,7 @@ class Processador {
 		memoriaProcessosEmEspera.add(this.dadoEmProcessamento);
 		memoriaProcessosEmEspera.sort(Comparator.comparingInt(d -> d.processo.prioridade));
 		
-		setDadoEmProcessamento(new Data(p, this.fatiaTempo));
+		setDadoEmProcessamento(new Data(p, this.fatiaTempo,  this.tempoEntradaSaida));
 		return true;
 	}
 	
@@ -122,12 +124,12 @@ class Processador {
 		int fatiaTempo;
 		int chamadaDeSistema;
 		
-		Data(Processo p, int fatiaTempo) {
+		Data(Processo p, int fatiaTempo, int chamadaDeSistema) {
 			this.processo = p;
 			this.fatiaTempo = (this.processo.tempoExecucao < fatiaTempo) 
 					? this.processo.tempoExecucao : fatiaTempo;
 			this.processo.tempoExecucao -= fatiaTempo;
-			this.chamadaDeSistema = 4;
+			this.chamadaDeSistema = chamadaDeSistema;
 		}
 		
 	}

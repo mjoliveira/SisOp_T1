@@ -6,17 +6,16 @@ import java.util.stream.Collectors;
 
 class RoundRoubin {
 
-	private int tempoEntradaSaida;
     private int tempo;
     private Map<Integer, List<Processo>> dicionarioProcessosRecebidosNoArquivo;
 	List<Processo> processados;
     private Processador processador;
 	
     RoundRoubin(DadosImportados data) {
-		this.tempoEntradaSaida = 4;
+        int tempoEntradaSaida = 4;
 		this.tempo = 0;
 		this.dicionarioProcessosRecebidosNoArquivo = data.processos;
-		this.processador = new Processador(data.fatiaTempo);
+		this.processador = new Processador(data.fatiaTempo, tempoEntradaSaida);
 		processados = new LinkedList<>();
 	}
 	
