@@ -26,11 +26,11 @@ class App {
 		}
 
 		RoundRoubin round = new RoundRoubin(data);
-		round.start();
+		round.processar();
 
         print("");
         print("");
-        round.processados
+        round.processosFinalizados
                 .stream()
                 .sorted(Comparator.comparingInt(e -> e.codigo))
                 .forEach(e->print("processo: " + e.codigo +
@@ -38,21 +38,21 @@ class App {
                         " tempo de resposta: " + e.getTempoResposta()));
 
 
-        round.processados
+        round.processosFinalizados
                 .stream()
                 .mapToInt(Processo::getTempoResposta)
                 .average()
                 .ifPresent(v -> print("\ntempo medio de respotas: " + v));
 
         print("");
-        round.processados
+        round.processosFinalizados
                 .stream()
                 .sorted(Comparator.comparingInt(e -> e.codigo))
                 .forEach(e->print("processo: " + e.codigo +
                         " tempo de Chegada: " + e.tempoChegada +
                         " tempo de espera: " + e.getTempoEspera()));
 
-		round.processados
+		round.processosFinalizados
                 .stream()
 				.mapToInt(Processo::getTempoEspera)
 				.average()

@@ -14,7 +14,7 @@ class DadosImportados {
 	
 	int quantidadeProcessos;
 	int fatiaTempo;
-	Map<Integer, List<Processo>> mapProcessos;
+	Map<Integer, List<Processo>> mapFilaProcessos;
 	
 	DadosImportados() {}
 }

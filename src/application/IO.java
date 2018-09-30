@@ -26,7 +26,7 @@ class IO {
      *
      * @param arquivo, string com o caminho e nome do arquivo
      * @throws IOException erro na leitura do arquivo
-     * @throws ExceptionInInitializerError erro na quaidade de mapProcessos
+     * @throws ExceptionInInitializerError erro na quaidade de mapFilaProcessos
      */
 	@SuppressWarnings("SameParameterValue")
     static DadosImportados carregarArquivo(String arquivo) throws IOException, ExceptionInInitializerError {
@@ -67,7 +67,7 @@ class IO {
 		}
 
 		if (listaCompletaProcessos.size() != dadosImportados.quantidadeProcessos) {
-		    throw new ExceptionInInitializerError("numero de mapProcessos incompativeis");
+		    throw new ExceptionInInitializerError("numero de mapFilaProcessos incompativeis");
         }
 
         // cria uma fila de prioridade para prioridade
@@ -83,8 +83,8 @@ class IO {
 
 	    });
 
-	    // add a lista de mapProcessos a CacheData
-	    dadosImportados.mapProcessos = dicionarioFilaProcessos;
+	    // add a lista de mapFilaProcessos a CacheData
+	    dadosImportados.mapFilaProcessos = dicionarioFilaProcessos;
 	    
 		return dadosImportados;
 		
