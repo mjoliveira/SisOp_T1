@@ -13,19 +13,30 @@ import java.util.stream.Collectors;
  */
 class Processador {
 
+    // lista dos processos que sairam do processador devido a prioridade mais baixa
 	private final List<CacheData> memoriaProcessosEmEspera;
+
+	// lista de processos que sairam do processador devido a chamada de sistema
 	private final List<CacheData> memoriaProcessosChamadaDeSistema;
+
+	// variavel do processo que esta sendo executado no processador
 	private CacheData dadoEmProcessamento;
+
+	// booleano acionado quando uma troca de contexto acontece
 	private Boolean trocaDeContexto;
-	private final int tempoEntradaSaida;
+
+	// tempo padrao de entrada e saida
+	private final int tempoES;
+
+	// tempo padrao de processamento para processo
 	private final int fatiaTempo;
 	
-	Processador(int fatiaTempo, int tempoEntradaSaida) {
+	Processador(int fatiaTempo, int tempoES) {
 		this.memoriaProcessosEmEspera = new LinkedList<>();
 		this.memoriaProcessosChamadaDeSistema = new LinkedList<>();
 		this.trocaDeContexto = false;
 		this.fatiaTempo = fatiaTempo;
-		this.tempoEntradaSaida = tempoEntradaSaida;
+		this.tempoES = tempoES;
 	}
 	
 	boolean isEmpty() {
@@ -35,23 +46,23 @@ class Processador {
 	}
 	
 	boolean add(Processo p) {
-		
-		if (this.dadoEmProcessamento == null) {
-			
-			if (memoriaProcessosEmEspera.isEmpty() 
-					|| p.prioridade < memoriaProcessosEmEspera.get(0).processo.prioridade) {
-				
-				setDadoEmProcessamento(new CacheData(p, this.fatiaTempo, this.tempoEntradaSaida));
-				return true;
-				
-			} else {
-				
-				setDadoEmProcessamento(memoriaProcessosEmEspera.remove(0));
-				return false;
-				
-			}
-						
-		}
+
+        if (this.dadoEmProcessamento == null) {
+
+            if (memoriaProcessosEmEspera.isEmpty()
+                    || p.prioridade < memoriaProcessosEmEspera.get(0).processo.prioridade) {
+
+                setDadoEmProcessamento(new CacheData(p, this.fatiaTempo, this.tempoES));
+                return true;
+
+            } else {
+
+                setDadoEmProcessamento(memoriaProcessosEmEspera.remove(0));
+                return false;
+
+            }
+
+        }
 		
 		if (this.dadoEmProcessamento.processo.prioridade <= p.prioridade) {
 			return false;
@@ -60,7 +71,7 @@ class Processador {
 		memoriaProcessosEmEspera.add(this.dadoEmProcessamento);
 		memoriaProcessosEmEspera.sort(Comparator.comparingInt(d -> d.processo.prioridade));
 		
-		setDadoEmProcessamento(new CacheData(p, this.fatiaTempo,  this.tempoEntradaSaida));
+		setDadoEmProcessamento(new CacheData(p, this.fatiaTempo,  this.tempoES));
 		return true;
 	}
 	
