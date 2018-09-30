@@ -31,18 +31,18 @@ class IO {
 	@SuppressWarnings("SameParameterValue")
     static DadosImportados carregarArquivo(String arquivo) throws IOException, ExceptionInInitializerError {
 		
-		DadosImportados data = new DadosImportados();
-		
-		List<Processo> listaProcessos = new LinkedList<>();
-		
+		DadosImportados dadosImportados = new DadosImportados();
+
+		List<Processo> listaCompletaProcessos = new LinkedList<>();
+
 		FileReader arq = new FileReader(arquivo);
 	    try (BufferedReader lerArq = new BufferedReader(arq)) {
 
 			// Lê a primeira linha.
-            data.quantidadeProcessos = parseInt(lerArq.readLine());
+            dadosImportados.quantidadeProcessos = parseInt(lerArq.readLine());
 
 			// Lê a segunda linha.
-            data.fatiaTempo = parseInt(lerArq.readLine());
+            dadosImportados.fatiaTempo = parseInt(lerArq.readLine());
 
 
 			// Lê  todas as outras linhas.
@@ -63,30 +63,30 @@ class IO {
 					// converte um vetor de inteiros em Processo
 					.map(Processo::new)
 					// add o processo a lista
-					.forEach(listaProcessos::add);
+					.forEach(listaCompletaProcessos::add);
 		}
 
-		if (listaProcessos.size() != data.quantidadeProcessos) {
+		if (listaCompletaProcessos.size() != dadosImportados.quantidadeProcessos) {
 		    throw new ExceptionInInitializerError("numero de mapProcessos incompativeis");
         }
 
         // cria uma fila de prioridade para prioridade
         // adiciona cada proprioridade a sua respectiva fila
-	    Map<Integer, List<Processo>> dicionarioProcessos = new HashMap<>();
-	    listaProcessos.forEach(p -> {
+	    Map<Integer, List<Processo>> dicionarioFilaProcessos = new HashMap<>();
+	    listaCompletaProcessos.forEach(p -> {
 
-	    	if (!dicionarioProcessos.containsKey(p.prioridade)) {
-	    		dicionarioProcessos.put(p.prioridade, new LinkedList<>());
+	    	if (!dicionarioFilaProcessos.containsKey(p.prioridade)) {
+	    		dicionarioFilaProcessos.put(p.prioridade, new LinkedList<>());
 	    	}
 
-	    	dicionarioProcessos.get(p.prioridade).add(p);
+	    	dicionarioFilaProcessos.get(p.prioridade).add(p);
 
 	    });
 
 	    // add a lista de mapProcessos a CacheData
-	    data.mapProcessos = dicionarioProcessos;
+	    dadosImportados.mapProcessos = dicionarioFilaProcessos;
 	    
-		return data;
+		return dadosImportados;
 		
 	}
 
