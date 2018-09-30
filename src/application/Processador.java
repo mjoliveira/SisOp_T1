@@ -28,19 +28,19 @@ class Processador {
 				&& memoriaProcessosChamadaDeSistema.isEmpty());
 	}
 	
-	boolean add(Processo p, int tempo) {
+	boolean add(Processo p) {
 		
 		if (this.dadoEmProcessamento == null) {
 			
 			if (memoriaProcessosEmEspera.isEmpty() 
 					|| p.prioridade < memoriaProcessosEmEspera.get(0).processo.prioridade) {
 				
-				setDadoEmProcessamento(new Data(p, this.fatiaTempo, this.tempoEntradaSaida), tempo);
+				setDadoEmProcessamento(new Data(p, this.fatiaTempo, this.tempoEntradaSaida));
 				return true;
 				
 			} else {
 				
-				setDadoEmProcessamento(memoriaProcessosEmEspera.remove(0), tempo);
+				setDadoEmProcessamento(memoriaProcessosEmEspera.remove(0));
 				return false;
 				
 			}
@@ -54,7 +54,7 @@ class Processador {
 		memoriaProcessosEmEspera.add(this.dadoEmProcessamento);
 		memoriaProcessosEmEspera.sort(Comparator.comparingInt(d -> d.processo.prioridade));
 		
-		setDadoEmProcessamento(new Data(p, this.fatiaTempo,  this.tempoEntradaSaida), tempo);
+		setDadoEmProcessamento(new Data(p, this.fatiaTempo,  this.tempoEntradaSaida));
 		return true;
 	}
 	
@@ -78,13 +78,13 @@ class Processador {
 			if (this.dadoEmProcessamento.processo.tempoAcessoOperacaoES == 0) {
 				
 				memoriaProcessosChamadaDeSistema.add(this.dadoEmProcessamento);
-				setDadoEmProcessamento(null, tempo);
+				setDadoEmProcessamento(null);
 				return null;
 				
 			} else if (this.dadoEmProcessamento.fatiaTempo == 0) {
 				
 				Processo p = this.dadoEmProcessamento.processo;
-				setDadoEmProcessamento(null, tempo);
+				setDadoEmProcessamento(null);
 				return p;
 				
 			} else {
@@ -95,7 +95,7 @@ class Processador {
 		}
 		
 		if (!memoriaProcessosEmEspera.isEmpty()) {
-			setDadoEmProcessamento(memoriaProcessosEmEspera.remove(0), tempo);
+			setDadoEmProcessamento(memoriaProcessosEmEspera.remove(0));
 		}
 		
 			
@@ -103,15 +103,9 @@ class Processador {
 		return null;
 	}
 	
-	private void setDadoEmProcessamento(Data dadoEmProcessamento, int tempo) {
-	    if (this.dadoEmProcessamento != null) {
-	        this.dadoEmProcessamento.processo.setTempoSaida(tempo);
-        }
+	private void setDadoEmProcessamento(Data dadoEmProcessamento) {
 		this.dadoEmProcessamento = dadoEmProcessamento;
 		trocaDeContexto = true;
-        if (this.dadoEmProcessamento != null) {
-            this.dadoEmProcessamento.processo.setEntradaNoProcessador(tempo);
-        }
 	}
 	
 	private void processarChamadaSistema() {

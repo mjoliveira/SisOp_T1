@@ -29,6 +29,10 @@ class RoundRoubin {
 			
 			Processo processado = processador.processar(tempo);
 
+            if (processado != null) {
+                processado.tempoSaida = tempo;
+            }
+
 			if (processado != null && processado.tempoExecucao > 0) {
 				
 				if (!dicionarioProcessosRecebidosNoArquivo.containsKey(processado.prioridade)) {
@@ -62,7 +66,7 @@ class RoundRoubin {
 			
 			p = processosValidosParaAddNoProcessador.get(0);
 			
-			if (processador.add(p, tempo)) {
+			if (processador.add(p)) {
 				dicionarioProcessosRecebidosNoArquivo.get(p.prioridade).remove(p);
 				if (dicionarioProcessosRecebidosNoArquivo.get(p.prioridade).isEmpty()) {
 					dicionarioProcessosRecebidosNoArquivo.remove(p.prioridade);

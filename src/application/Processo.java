@@ -12,8 +12,8 @@ class Processo {
 
 	private int tempoResposta;
 
-	private int tempoEspera;
-    private int tempoSaida;
+	int tempoSaida;
+    private int tempoExecucaoDefault;
 	
 	Processo(Integer[] processos) {
 		Processo.codigoGeral++;
@@ -27,8 +27,8 @@ class Processo {
 
 		this.tempoResposta = tempoChegada;
 
-        this.tempoEspera = 0;
         this.tempoSaida = tempoChegada;
+        this.tempoExecucaoDefault = tempoExecucao;
 	}
 
 	int getTempoResposta() {
@@ -39,15 +39,8 @@ class Processo {
 		this.tempoResposta = tempoResposta;
 	}
 
-	void setEntradaNoProcessador(int tempo) {
-	    tempoEspera += tempo - tempoSaida;
-    }
-
-    void setTempoSaida(int tempoSaida) {
-        this.tempoSaida = tempoSaida;
-    }
-
     int getTempoEspera() {
-        return tempoEspera;
+        return tempoSaida - tempoChegada - tempoExecucaoDefault;
     }
+
 }
