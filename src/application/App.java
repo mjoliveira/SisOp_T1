@@ -6,28 +6,39 @@ import java.util.Comparator;
 public class App {
 
 	public static void main(String[] args) {
-		DadosImportados data = null;
+		DadosImportados data;
 		try {
 			data = IO.carregarArquivo("teste");
 		} catch (IOException e) {
 			e.printStackTrace();
+			return;
 		}
 		RoundRoubin round = new RoundRoubin(data);
 		round.start();
 
         print("");
         print("");
-		round.processados
+        round.processados
                 .stream()
                 .sorted(Comparator.comparingInt(e -> e.codigo))
-                .forEach(e->print("" + e.codigo + " " + e.getTempoResposta()+ " " + e.tempoChegada));
+                .forEach(e->print("processo: " + e.codigo +
+                        " tempo de Chegada: " + e.tempoChegada +
+                        " tempo de resposta: " + e.getTempoResposta()));
 
-		round.processados
+
+        round.processados
                 .stream()
                 .mapToInt(Processo::getTempoResposta)
                 .average()
                 .ifPresent(v -> print("\ntempo medio de respotas: " + v));
 
+        print("");
+        round.processados
+                .stream()
+                .sorted(Comparator.comparingInt(e -> e.codigo))
+                .forEach(e->print("processo: " + e.codigo +
+                        " tempo de Chegada: " + e.tempoChegada +
+                        " tempo de espera: " + e.getTempoEspera()));
 
 		round.processados
                 .stream()
