@@ -1,19 +1,24 @@
 package application;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
 class Processo {
 
     private static int codigoGeral = 0;
 	
-	int codigo;
-	int tempoChegada;
+	final int codigo;
+	final int tempoChegada;
 	int tempoExecucao;
-	int prioridade;
-	int tempoAcessoOperacaoES;
+	final int prioridade;
+	private int tempoAcessoOperacaoES;
+	private final List<Integer> listOperacoesES;
 
 	private int tempoResposta;
 
 	int tempoSaida;
-    private int tempoExecucaoDefault;
+    private final int tempoExecucaoDefault;
 	
 	Processo(Integer[] processos) {
 		Processo.codigoGeral++;
@@ -22,8 +27,15 @@ class Processo {
 		this.tempoChegada = processos[0];
 		this.tempoExecucao = processos[1];
 		this.prioridade = processos[2];
-		if (processos.length == 4)
-			this.tempoAcessoOperacaoES = processos[3];
+
+		if (processos.length > 3) {
+            this.tempoAcessoOperacaoES = processos[3];
+        }
+
+        this.listOperacoesES = new LinkedList<>();
+        if (processos.length > 4) {
+            this.listOperacoesES.addAll(Arrays.asList(processos).subList(4, processos.length));
+        }
 
 		this.tempoResposta = tempoChegada;
 
@@ -43,4 +55,14 @@ class Processo {
         return tempoSaida - tempoChegada - tempoExecucaoDefault;
     }
 
+    void updateOperacaoES() {
+        tempoAcessoOperacaoES--;
+        if (tempoAcessoOperacaoES < 0 && !listOperacoesES.isEmpty()) {
+            tempoAcessoOperacaoES = listOperacoesES.remove(0);
+        }
+    }
+
+    int getTempoAcessoOperacaoES() {
+	    return  tempoAcessoOperacaoES;
+    }
 }

@@ -7,9 +7,9 @@ import java.util.stream.Collectors;
 class RoundRoubin {
 
     private int tempo;
-    private Map<Integer, List<Processo>> dicionarioProcessosRecebidosNoArquivo;
-	List<Processo> processados;
-    private Processador processador;
+    private final Map<Integer, List<Processo>> dicionarioProcessosRecebidosNoArquivo;
+	final List<Processo> processados;
+    private final Processador processador;
 	
     RoundRoubin(DadosImportados data) {
         int tempoEntradaSaida = 4;

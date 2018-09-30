@@ -3,7 +3,7 @@ package application;
 import java.io.IOException;
 import java.util.Comparator;
 
-public class App {
+class App {
 
 	public static void main(String[] args) {
 		DadosImportados data;

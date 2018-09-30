@@ -14,7 +14,8 @@ class IO {
 
     private IO(){}
 	
-	static DadosImportados carregarArquivo(String arquivo) throws IOException{ //L� os dados do arquivo.
+	@SuppressWarnings("SameParameterValue")
+    static DadosImportados carregarArquivo(String arquivo) throws IOException, ExceptionInInitializerError { //L� os dados do arquivo.
 		
 		DadosImportados data = new DadosImportados();
 		
@@ -48,6 +49,10 @@ class IO {
 					// add o processo a lista
 					.forEach(listaProcessos::add);
 		}
+
+		if (listaProcessos.size() != data.quantidadeProcessos) {
+		    throw new ExceptionInInitializerError("numero de processos incompativeis");
+        }
 
 	    Map<Integer, List<Processo>> dicionarioProcessos = new HashMap<>();
 	    listaProcessos.forEach(p -> {

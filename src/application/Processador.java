@@ -7,12 +7,12 @@ import java.util.stream.Collectors;
 
 class Processador {
 
-	private List<Data> memoriaProcessosEmEspera;
-	private List<Data> memoriaProcessosChamadaDeSistema;
+	private final List<Data> memoriaProcessosEmEspera;
+	private final List<Data> memoriaProcessosChamadaDeSistema;
 	private Data dadoEmProcessamento;
 	private Boolean trocaDeContexto;
-	private int tempoEntradaSaida;
-	private int fatiaTempo;
+	private final int tempoEntradaSaida;
+	private final int fatiaTempo;
 	
 	Processador(int fatiaTempo, int tempoEntradaSaida) {
 		this.memoriaProcessosEmEspera = new LinkedList<>();
@@ -69,13 +69,13 @@ class Processador {
 		
 		if (this.dadoEmProcessamento != null) {
 			this.dadoEmProcessamento.fatiaTempo--;
-			this.dadoEmProcessamento.processo.tempoAcessoOperacaoES--;
+			this.dadoEmProcessamento.processo.updateOperacaoES();
 			System.out.print(this.dadoEmProcessamento.processo.codigo);
 			
 			if (this.dadoEmProcessamento.processo.getTempoResposta() == 0)
 				this.dadoEmProcessamento.processo.setTempoResposta(tempo);
 			
-			if (this.dadoEmProcessamento.processo.tempoAcessoOperacaoES == 0) {
+			if (this.dadoEmProcessamento.processo.getTempoAcessoOperacaoES() == 0) {
 				
 				memoriaProcessosChamadaDeSistema.add(this.dadoEmProcessamento);
 				setDadoEmProcessamento(null);
@@ -120,7 +120,7 @@ class Processador {
 	
 	private class Data {
 		
-		Processo processo;
+		final Processo processo;
 		int fatiaTempo;
 		int chamadaDeSistema;
 		
