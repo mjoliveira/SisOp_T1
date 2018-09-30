@@ -10,12 +10,26 @@ import java.util.Map;
 
 import static java.lang.Integer.parseInt;
 
+/**
+ * Classe usada para leitura de arquivo
+ * Autores: Mayara e Virgilius
+ * Data: 30/09/2018
+ */
 class IO {
 
     private IO(){}
-	
+
+    /**
+     * Metodo responsavel por:
+     * - ler o arquivo
+     * - converter as informações em dados
+     *
+     * @param arquivo, string com o caminho e nome do arquivo
+     * @throws IOException erro na leitura do arquivo
+     * @throws ExceptionInInitializerError erro na quaidade de processos
+     */
 	@SuppressWarnings("SameParameterValue")
-    static DadosImportados carregarArquivo(String arquivo) throws IOException, ExceptionInInitializerError { //L� os dados do arquivo.
+    static DadosImportados carregarArquivo(String arquivo) throws IOException, ExceptionInInitializerError {
 		
 		DadosImportados data = new DadosImportados();
 		
@@ -24,14 +38,14 @@ class IO {
 		FileReader arq = new FileReader(arquivo);
 	    try (BufferedReader lerArq = new BufferedReader(arq)) {
 
-			// L� a primeira linha.
+			// Lê a primeira linha.
             data.quantidadeProcessos = parseInt(lerArq.readLine());
 
-			// L� a segunda linha.
+			// Lê a segunda linha.
             data.fatiaTempo = parseInt(lerArq.readLine());
 
 
-			// L�  todas as outras linhas.
+			// Lê  todas as outras linhas.
 			lerArq
 					// todas as linhas restantes
 					.lines()
@@ -54,17 +68,19 @@ class IO {
 		    throw new ExceptionInInitializerError("numero de processos incompativeis");
         }
 
+        // cria uma fila de prioridade para prioridade
+        // adiciona cada proprioridade a sua respectiva fila
 	    Map<Integer, List<Processo>> dicionarioProcessos = new HashMap<>();
 	    listaProcessos.forEach(p -> {
-	    	
+
 	    	if (!dicionarioProcessos.containsKey(p.prioridade)) {
 	    		dicionarioProcessos.put(p.prioridade, new LinkedList<>());
 	    	}
-	    	
+
 	    	dicionarioProcessos.get(p.prioridade).add(p);
-	    	
+
 	    });
-	    
+
 	    // add a lista de processos a Data
 	    data.processos = dicionarioProcessos;
 	    

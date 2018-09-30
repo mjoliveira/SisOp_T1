@@ -3,16 +3,19 @@ package application;
 import java.io.IOException;
 import java.util.Comparator;
 
+import static application.IO.carregarArquivo;
+
 class App {
 
 	public static void main(String[] args) {
 		DadosImportados data;
 		try {
-			data = IO.carregarArquivo("teste");
-		} catch (IOException e) {
+			data = carregarArquivo("teste");
+		} catch (IOException|ExceptionInInitializerError e) {
 			e.printStackTrace();
 			return;
 		}
+
 		RoundRoubin round = new RoundRoubin(data);
 		round.start();
 
