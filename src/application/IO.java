@@ -51,6 +51,8 @@ class IO {
 					.lines()
 					// divide a linha em um vetor de string
 					.map(line -> line.split(" "))
+                    // valida somente as linhas com tres elementos ou mais
+                    .filter(line -> line.length >= 3)
 					// converte o vetor de string em um vetor de inteiros
 					.map(v -> {
 						Integer[] n = new Integer[v.length];
@@ -87,5 +89,5 @@ class IO {
 		return data;
 		
 	}
-	
+
 }

@@ -10,7 +10,7 @@ class App {
 	public static void main(String[] args) {
 		DadosImportados data;
 		try {
-			data = carregarArquivo("teste");
+			data = carregarArquivo("trab-so1-teste3 SR");
 		} catch (IOException|ExceptionInInitializerError e) {
 			e.printStackTrace();
 			return;
