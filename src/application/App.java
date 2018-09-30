@@ -1,6 +1,7 @@
 package application;
 
 import java.io.IOException;
+import java.util.Comparator;
 
 public class App {
 
@@ -13,6 +14,13 @@ public class App {
 		}
 		RoundRoubin round = new RoundRoubin(data);
 		round.start();
+
+        print("");
+        print("");
+		round.processados
+                .stream()
+                .sorted(Comparator.comparingInt(e -> e.codigo))
+                .forEach(e->print("" + e.codigo + " " + e.getTempoResposta()+ " " + e.tempoChegada));
 
 		round.processados
                 .stream()

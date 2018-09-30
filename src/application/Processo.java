@@ -24,8 +24,8 @@ class Processo {
 		this.prioridade = processos[2];
 		if (processos.length == 4)
 			this.tempoAcessoOperacaoES = processos[3];
-		
-		this.tempoResposta = 0;
+
+		this.tempoResposta = tempoChegada;
 
         this.tempoEspera = 0;
         this.tempoSaida = tempoChegada;
