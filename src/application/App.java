@@ -5,25 +5,33 @@ import java.io.IOException;
 public class App {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		DadosImportados data = null;
 		try {
 			data = IO.carregarArquivo("teste");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		RoundRoubin round = new RoundRoubin(data);
 		round.start();
-		
-		Double mediaTempoResposta = round
-				.processados
-				.stream()
-				.mapToInt(processo -> processo.tempoResposta)
+
+		round.processados
+                .stream()
+                .mapToInt(Processo::getTempoResposta)
+                .average()
+                .ifPresent(v -> print("\ntempo medio de respotas: " + v));
+
+
+		round.processados
+                .stream()
+				.mapToInt(Processo::getTempoEspera)
 				.average()
-				.getAsDouble();
-		
-		System.out.println("\ntempo medio de respotas: " + mediaTempoResposta);
+                .ifPresent(v -> print("\ntempo medio de espera: " + v));
+
+		System.out.println();
+	}
+
+	private static void print(String txt) {
+		System.out.println(txt);
 	}
 
 }

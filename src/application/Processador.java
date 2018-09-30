@@ -1,31 +1,32 @@
 package application;
 
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Processador {
+class Processador {
 
-	List<Data> memoriaProcessosEmEspera;
-	List<Data> memoriaProcessosChamadaDeSistema;
+	private List<Data> memoriaProcessosEmEspera;
+	private List<Data> memoriaProcessosChamadaDeSistema;
 	private Data dadoEmProcessamento;
-	Boolean trocaDeContexto;
-	int fatiaTempo;
+	private Boolean trocaDeContexto;
+	private int fatiaTempo;
 	
-	public Processador(int fatiaTempo) {
+	Processador(int fatiaTempo) {
 		this.memoriaProcessosEmEspera = new LinkedList<>();
 		this.memoriaProcessosChamadaDeSistema = new LinkedList<>();
 		this.trocaDeContexto = false;
 		this.fatiaTempo = fatiaTempo;
 	}
 	
-	public boolean isEmpty() {
+	boolean isEmpty() {
 		return (dadoEmProcessamento == null 
 				&& memoriaProcessosEmEspera.isEmpty()
 				&& memoriaProcessosChamadaDeSistema.isEmpty());
 	}
 	
-	public boolean add(Processo p) {
+	boolean add(Processo p) {
 		
 		if (this.dadoEmProcessamento == null) {
 			
@@ -49,13 +50,13 @@ public class Processador {
 		}
 		
 		memoriaProcessosEmEspera.add(this.dadoEmProcessamento);
-		memoriaProcessosEmEspera.sort((d1,d2) -> d1.processo.prioridade - d2.processo.prioridade );
+		memoriaProcessosEmEspera.sort(Comparator.comparingInt(d -> d.processo.prioridade));
 		
 		setDadoEmProcessamento(new Data(p, this.fatiaTempo));
 		return true;
 	}
 	
-	public Processo processar(int tempo) {
+	Processo processar(int tempo) {
 		processarChamadaSistema();
 		
 		if (trocaDeContexto) {
@@ -69,8 +70,8 @@ public class Processador {
 			this.dadoEmProcessamento.processo.tempoAcessoOperacaoES--;
 			System.out.print(this.dadoEmProcessamento.processo.codigo);
 			
-			if (this.dadoEmProcessamento.processo.tempoResposta == 0)
-				this.dadoEmProcessamento.processo.tempoResposta = tempo;
+			if (this.dadoEmProcessamento.processo.getTempoResposta() == 0)
+				this.dadoEmProcessamento.processo.setTempoResposta(tempo);
 			
 			if (this.dadoEmProcessamento.processo.tempoAcessoOperacaoES == 0) {
 				
@@ -91,7 +92,7 @@ public class Processador {
 			}
 		}
 		
-		if (memoriaProcessosEmEspera.isEmpty() == false) {
+		if (!memoriaProcessosEmEspera.isEmpty()) {
 			setDadoEmProcessamento(memoriaProcessosEmEspera.remove(0));
 		}
 		
@@ -100,12 +101,12 @@ public class Processador {
 		return null;
 	}
 	
-	public void setDadoEmProcessamento(Data dadoEmProcessamento) {
+	private void setDadoEmProcessamento(Data dadoEmProcessamento) {
 		this.dadoEmProcessamento = dadoEmProcessamento;
 		trocaDeContexto = true;
 	}
 	
-	public void processarChamadaSistema() {
+	private void processarChamadaSistema() {
 		memoriaProcessosChamadaDeSistema.forEach(d -> d.chamadaDeSistema--);
 		List<Data> dadosFinalizados = memoriaProcessosChamadaDeSistema
 			.stream()
@@ -121,7 +122,7 @@ public class Processador {
 		int fatiaTempo;
 		int chamadaDeSistema;
 		
-		public Data(Processo p, int fatiaTempo) {
+		Data(Processo p, int fatiaTempo) {
 			this.processo = p;
 			this.fatiaTempo = (this.processo.tempoExecucao < fatiaTempo) 
 					? this.processo.tempoExecucao : fatiaTempo;
