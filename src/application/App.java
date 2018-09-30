@@ -19,7 +19,7 @@ class App {
 	public static void main(String[] args) {
 		DadosImportados data;
 		try {
-			data = carregarArquivo("trab-so1-teste4 SR");
+			data = carregarArquivo("teste2");
 		} catch (IOException|ExceptionInInitializerError e) {
 			e.printStackTrace();
 			return;

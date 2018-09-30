@@ -94,7 +94,7 @@ class Processador {
      */
 	Processo processar(int tempo) {
 		processarChamadaSistema();
-		
+
 		if (trocaDeContexto) {
 			System.out.print("C");
 			trocaDeContexto = false;
@@ -136,12 +136,20 @@ class Processador {
 		System.out.print("-");
 		return null;
 	}
-	
+
+    /**
+     * metodo que seta cache no processador
+     *
+     * @param dadoEmProcessamento dado que sera setado no processador
+     */
 	private void setDadoEmProcessamento(CacheData dadoEmProcessamento) {
 		this.dadoEmProcessamento = dadoEmProcessamento;
 		trocaDeContexto = true;
 	}
-	
+
+    /**
+     * atualiza chamadas de sistema
+     */
 	private void processarChamadaSistema() {
 		memoriaProcessosChamadaDeSistema.forEach(d -> d.chamadaDeSistema--);
 		List<CacheData> dadosFinalizados = memoriaProcessosChamadaDeSistema

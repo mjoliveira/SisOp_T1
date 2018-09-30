@@ -15,9 +15,10 @@ class Processo {
     private static int codigoGeral = 0;
 	
 	final int codigo;
+    final int prioridade;
 	final int tempoChegada;
 	int tempoExecucao;
-	final int prioridade;
+	
 	private int tempoAcessoOperacaoES;
 	private final List<Integer> listOperacoesES;
 
