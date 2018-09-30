@@ -38,13 +38,24 @@ class Processador {
 		this.fatiaTempo = fatiaTempo;
 		this.tempoES = tempoES;
 	}
-	
+
+
+    /**
+     * @return retorna se o processador esta sem nenhum processo
+     */
 	boolean isEmpty() {
 		return (dadoEmProcessamento == null 
 				&& memoriaProcessosEmEspera.isEmpty()
 				&& memoriaProcessosChamadaDeSistema.isEmpty());
 	}
-	
+
+
+    /**
+     * metodo que adiciona um processo ao processador
+     *
+     * @param p é o processo para tentar ser inserido no processador
+     * @return verdadeiro ou falso se o processo foi inserido no processador
+     */
 	boolean add(Processo p) {
 
         if (this.dadoEmProcessamento == null) {
@@ -74,7 +85,13 @@ class Processador {
 		setDadoEmProcessamento(new CacheData(p, this.fatiaTempo,  this.tempoES));
 		return true;
 	}
-	
+
+    /**
+     *  metodo que dispara o processamento do processador
+     *
+     * @param tempo tempo corrente pasado
+     * @return retorna o processo que saiu do processador
+     */
 	Processo processar(int tempo) {
 		processarChamadaSistema();
 		
@@ -98,7 +115,7 @@ class Processador {
 				setDadoEmProcessamento(null);
 				return null;
 				
-			} else if (this.dadoEmProcessamento.fatiaTempo == 0) {
+			} else if (this.dadoEmProcessamento.fatiaTempo <= 0) {
 				
 				Processo p = this.dadoEmProcessamento.processo;
 				setDadoEmProcessamento(null);
