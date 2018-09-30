@@ -13,7 +13,7 @@ import static java.lang.Integer.parseInt;
 /**
  * Classe usada para leitura de arquivo
  * Autores: Mayara e Virgilius
- * Data: 30/09/2018
+ * CacheData: 30/09/2018
  */
 class IO {
 
@@ -26,7 +26,7 @@ class IO {
      *
      * @param arquivo, string com o caminho e nome do arquivo
      * @throws IOException erro na leitura do arquivo
-     * @throws ExceptionInInitializerError erro na quaidade de processos
+     * @throws ExceptionInInitializerError erro na quaidade de mapProcessos
      */
 	@SuppressWarnings("SameParameterValue")
     static DadosImportados carregarArquivo(String arquivo) throws IOException, ExceptionInInitializerError {
@@ -67,7 +67,7 @@ class IO {
 		}
 
 		if (listaProcessos.size() != data.quantidadeProcessos) {
-		    throw new ExceptionInInitializerError("numero de processos incompativeis");
+		    throw new ExceptionInInitializerError("numero de mapProcessos incompativeis");
         }
 
         // cria uma fila de prioridade para prioridade
@@ -83,8 +83,8 @@ class IO {
 
 	    });
 
-	    // add a lista de processos a Data
-	    data.processos = dicionarioProcessos;
+	    // add a lista de mapProcessos a CacheData
+	    data.mapProcessos = dicionarioProcessos;
 	    
 		return data;
 		

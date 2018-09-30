@@ -5,11 +5,17 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Classe representa o processador e o cache do processador
+ *
+ * Autores: Mayara e Virgilius
+ * CacheData: 30/09/2018
+ */
 class Processador {
 
-	private final List<Data> memoriaProcessosEmEspera;
-	private final List<Data> memoriaProcessosChamadaDeSistema;
-	private Data dadoEmProcessamento;
+	private final List<CacheData> memoriaProcessosEmEspera;
+	private final List<CacheData> memoriaProcessosChamadaDeSistema;
+	private CacheData dadoEmProcessamento;
 	private Boolean trocaDeContexto;
 	private final int tempoEntradaSaida;
 	private final int fatiaTempo;
@@ -35,7 +41,7 @@ class Processador {
 			if (memoriaProcessosEmEspera.isEmpty() 
 					|| p.prioridade < memoriaProcessosEmEspera.get(0).processo.prioridade) {
 				
-				setDadoEmProcessamento(new Data(p, this.fatiaTempo, this.tempoEntradaSaida));
+				setDadoEmProcessamento(new CacheData(p, this.fatiaTempo, this.tempoEntradaSaida));
 				return true;
 				
 			} else {
@@ -54,7 +60,7 @@ class Processador {
 		memoriaProcessosEmEspera.add(this.dadoEmProcessamento);
 		memoriaProcessosEmEspera.sort(Comparator.comparingInt(d -> d.processo.prioridade));
 		
-		setDadoEmProcessamento(new Data(p, this.fatiaTempo,  this.tempoEntradaSaida));
+		setDadoEmProcessamento(new CacheData(p, this.fatiaTempo,  this.tempoEntradaSaida));
 		return true;
 	}
 	
@@ -103,14 +109,14 @@ class Processador {
 		return null;
 	}
 	
-	private void setDadoEmProcessamento(Data dadoEmProcessamento) {
+	private void setDadoEmProcessamento(CacheData dadoEmProcessamento) {
 		this.dadoEmProcessamento = dadoEmProcessamento;
 		trocaDeContexto = true;
 	}
 	
 	private void processarChamadaSistema() {
 		memoriaProcessosChamadaDeSistema.forEach(d -> d.chamadaDeSistema--);
-		List<Data> dadosFinalizados = memoriaProcessosChamadaDeSistema
+		List<CacheData> dadosFinalizados = memoriaProcessosChamadaDeSistema
 			.stream()
 			.filter(d -> d.chamadaDeSistema == 0)
 			.collect(Collectors.toList());
@@ -118,13 +124,13 @@ class Processador {
 		memoriaProcessosChamadaDeSistema.removeAll(dadosFinalizados);
 	}
 	
-	private class Data {
+	private class CacheData {
 		
 		final Processo processo;
 		int fatiaTempo;
 		int chamadaDeSistema;
 		
-		Data(Processo p, int fatiaTempo, int chamadaDeSistema) {
+		CacheData(Processo p, int fatiaTempo, int chamadaDeSistema) {
 			this.processo = p;
 			this.fatiaTempo = (this.processo.tempoExecucao < fatiaTempo) 
 					? this.processo.tempoExecucao : fatiaTempo;

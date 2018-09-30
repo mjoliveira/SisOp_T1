@@ -4,6 +4,12 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Classe representa o cada processo recebido
+ *
+ * Autores: Mayara e Virgilius
+ * CacheData: 30/09/2018
+ */
 class Processo {
 
     private static int codigoGeral = 0;

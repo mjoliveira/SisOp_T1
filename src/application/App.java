@@ -5,12 +5,21 @@ import java.util.Comparator;
 
 import static application.IO.carregarArquivo;
 
+/**
+ * Classe Principal
+ * Solicita a leitura dos dados
+ * passa para o RoundRobin
+ * exibe os resultados
+ *
+ * Autores: Mayara e Virgilius
+ * CacheData: 30/09/2018
+ */
 class App {
 
 	public static void main(String[] args) {
 		DadosImportados data;
 		try {
-			data = carregarArquivo("trab-so1-teste3 SR");
+			data = carregarArquivo("trab-so1-teste4 SR");
 		} catch (IOException|ExceptionInInitializerError e) {
 			e.printStackTrace();
 			return;

@@ -4,6 +4,12 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
+/**
+ * Classe representa o algoritmo de round robin com prioridade 
+ *
+ * Autores: Mayara e Virgilius
+ * CacheData: 30/09/2018
+ */
 class RoundRoubin {
 
     private int tempo;
@@ -14,7 +20,7 @@ class RoundRoubin {
     RoundRoubin(DadosImportados data) {
         int tempoEntradaSaida = 4;
 		this.tempo = 0;
-		this.dicionarioProcessosRecebidosNoArquivo = data.processos;
+		this.dicionarioProcessosRecebidosNoArquivo = data.mapProcessos;
 		this.processador = new Processador(data.fatiaTempo, tempoEntradaSaida);
 		processados = new LinkedList<>();
 	}
