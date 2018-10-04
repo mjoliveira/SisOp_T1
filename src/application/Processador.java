@@ -57,34 +57,38 @@ class Processador {
      * @return verdadeiro ou falso se o processo foi inserido no processador
      */
 	boolean add(Processo p) {
-
         if (this.dadoEmProcessamento == null) {
-
-            if (memoriaProcessosEmEspera.isEmpty()
-                    || p.prioridade < memoriaProcessosEmEspera.get(0).processo.prioridade) {
-
-                setDadoEmProcessamento(new CacheData(p, this.fatiaTempo, this.tempoES));
-                return true;
-
-            } else {
-
-                setDadoEmProcessamento(memoriaProcessosEmEspera.remove(0));
-                return false;
-
-            }
-
+            return adicionarProcessadorVazio(p);
+        } else {
+            return adicionarProcessadorOcupado(p);
         }
-		
-		if (this.dadoEmProcessamento.processo.prioridade <= p.prioridade) {
-			return false;
-		}
-		
-		memoriaProcessosEmEspera.add(this.dadoEmProcessamento);
-		memoriaProcessosEmEspera.sort(Comparator.comparingInt(d -> d.processo.prioridade));
-		
-		setDadoEmProcessamento(new CacheData(p, this.fatiaTempo,  this.tempoES));
-		return true;
 	}
+
+	private boolean adicionarProcessadorVazio(Processo p) {
+        if (memoriaProcessosEmEspera.isEmpty()) {
+            setDadoEmProcessamento(new CacheData(p, this.fatiaTempo, this.tempoES));
+            return true;
+        } else if (p.prioridade < memoriaProcessosEmEspera.get(0).processo.prioridade)  {
+            setDadoEmProcessamento(new CacheData(p, this.fatiaTempo, this.tempoES));
+            return true;
+        } else {
+            setDadoEmProcessamento(memoriaProcessosEmEspera.remove(0));
+            return false;
+        }
+    }
+
+    private boolean adicionarProcessadorOcupado(Processo p) {
+        if (this.dadoEmProcessamento.processo.prioridade <= p.prioridade) {
+            return false;
+        } else {
+
+            memoriaProcessosEmEspera.add(this.dadoEmProcessamento);
+            memoriaProcessosEmEspera.sort(Comparator.comparingInt(d -> d.processo.prioridade));
+
+            setDadoEmProcessamento(new CacheData(p, this.fatiaTempo, this.tempoES));
+            return true;
+        }
+    }
 
     /**
      *  metodo que dispara o processamento do processador
@@ -102,40 +106,51 @@ class Processador {
 		}
 		
 		if (this.dadoEmProcessamento != null) {
-			this.dadoEmProcessamento.fatiaTempo--;
-			this.dadoEmProcessamento.processo.updateOperacaoES();
-			System.out.print(this.dadoEmProcessamento.processo.codigo);
-			
-			if (this.dadoEmProcessamento.processo.getTempoResposta() == 0)
-				this.dadoEmProcessamento.processo.setTempoResposta(tempo);
-			
-			if (this.dadoEmProcessamento.processo.getTempoAcessoOperacaoES() == 0) {
-				
-				memoriaProcessosChamadaDeSistema.add(this.dadoEmProcessamento);
-				setDadoEmProcessamento(null);
-				return null;
-				
-			} else if (this.dadoEmProcessamento.fatiaTempo <= 0) {
-				
-				Processo p = this.dadoEmProcessamento.processo;
-				setDadoEmProcessamento(null);
-				return p;
-				
-			} else {
-				
-				return null;
-				
-			}
+		    return processarDadoEmProcessamento(tempo);
 		}
-		
-		if (!memoriaProcessosEmEspera.isEmpty()) {
-			setDadoEmProcessamento(memoriaProcessosEmEspera.remove(0));
-		}
-		
-			
+
+        verificarProcessosEmEspera();
 		System.out.print("-");
 		return null;
 	}
+
+	private Processo processarDadoEmProcessamento(int tempo) {
+
+	    CacheData dp = dadoEmProcessamento;
+	    Processo processo = dp.processo;
+
+        dp.fatiaTempo--;
+        processo.tempoAcessoOperacaoES--;
+        System.out.print(processo.codigo);
+
+        if (processo.getTempoResposta() == 0) {
+            processo.setTempoResposta(tempo);
+        }
+
+        if (processo.getTempoAcessoOperacaoES() == 0) {
+
+            memoriaProcessosChamadaDeSistema.add(dp);
+            processo.updateOperacaoES();
+            setDadoEmProcessamento(null);
+            return null;
+
+        } else if (dp.fatiaTempo <= 0) {
+
+            setDadoEmProcessamento(null);
+            return processo;
+
+        } else {
+
+            return null;
+
+        }
+    }
+
+    private void verificarProcessosEmEspera() {
+        if (!memoriaProcessosEmEspera.isEmpty()) {
+            setDadoEmProcessamento(memoriaProcessosEmEspera.remove(0));
+        }
+    }
 
     /**
      * metodo que seta cache no processador
@@ -159,21 +174,21 @@ class Processador {
 		memoriaProcessosEmEspera.addAll(dadosFinalizados);
 		memoriaProcessosChamadaDeSistema.removeAll(dadosFinalizados);
 	}
-	
+
 	private class CacheData {
-		
+
 		final Processo processo;
 		int fatiaTempo;
 		int chamadaDeSistema;
-		
+
 		CacheData(Processo p, int fatiaTempo, int chamadaDeSistema) {
 			this.processo = p;
-			this.fatiaTempo = (this.processo.tempoExecucao < fatiaTempo) 
+			this.fatiaTempo = (this.processo.tempoExecucao < fatiaTempo)
 					? this.processo.tempoExecucao : fatiaTempo;
 			this.processo.tempoExecucao -= fatiaTempo;
 			this.chamadaDeSistema = chamadaDeSistema;
 		}
-		
+
 	}
 	
 }

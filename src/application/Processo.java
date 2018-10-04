@@ -18,8 +18,8 @@ class Processo {
     final int prioridade;
 	final int tempoChegada;
 	int tempoExecucao;
-	
-	private int tempoAcessoOperacaoES;
+
+	int tempoAcessoOperacaoES;
 	private final List<Integer> listOperacoesES;
 
 	private int tempoResposta;
@@ -35,6 +35,7 @@ class Processo {
 		this.tempoExecucao = processos[1];
 		this.prioridade = processos[2];
 
+		this.tempoAcessoOperacaoES = 0;
 		if (processos.length > 3) {
             this.tempoAcessoOperacaoES = processos[3];
         }
@@ -63,7 +64,7 @@ class Processo {
     }
 
     void updateOperacaoES() {
-        tempoAcessoOperacaoES--;
+		tempoAcessoOperacaoES--;
         if (tempoAcessoOperacaoES < 0 && !listOperacoesES.isEmpty()) {
             tempoAcessoOperacaoES = listOperacoesES.remove(0);
         }

@@ -19,7 +19,7 @@ class App {
 	public static void main(String[] args) {
 		DadosImportados data;
 		try {
-			data = carregarArquivo("teste2");
+			data = carregarArquivo("trab-so1-teste1 SR");
 		} catch (IOException|ExceptionInInitializerError e) {
 			e.printStackTrace();
 			return;
@@ -29,13 +29,14 @@ class App {
 		round.processar();
 
         print("");
-        print("");
-        round.processosFinalizados
-                .stream()
-                .sorted(Comparator.comparingInt(e -> e.codigo))
-                .forEach(e->print("processo: " + e.codigo +
-                        " tempo de Chegada: " + e.tempoChegada +
-                        " tempo de resposta: " + e.getTempoResposta()));
+//        print("");
+//        round.processosFinalizados
+//                .stream()
+//                .sorted(Comparator.comparingInt(e -> e.codigo))
+//                .forEach(e->print("processo: " + e.codigo +
+//						" prioridade " + e.prioridade +
+//						" tempo de Chegada: " + e.tempoChegada +
+//                        " tempo de resposta: " + e.getTempoResposta()));
 
 
         round.processosFinalizados
@@ -45,12 +46,13 @@ class App {
                 .ifPresent(v -> print("\ntempo medio de respotas: " + v));
 
         print("");
-        round.processosFinalizados
-                .stream()
-                .sorted(Comparator.comparingInt(e -> e.codigo))
-                .forEach(e->print("processo: " + e.codigo +
-                        " tempo de Chegada: " + e.tempoChegada +
-                        " tempo de espera: " + e.getTempoEspera()));
+//        round.processosFinalizados
+//                .stream()
+//                .sorted(Comparator.comparingInt(e -> e.codigo))
+//                .forEach(e->print("processo: " + e.codigo +
+//						" prioridade " + e.prioridade +
+//                        " tempo de Chegada: " + e.tempoChegada +
+//                        " tempo de espera: " + e.getTempoEspera()));
 
 		round.processosFinalizados
                 .stream()
