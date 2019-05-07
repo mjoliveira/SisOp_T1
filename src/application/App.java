@@ -19,7 +19,7 @@ class App {
 	public static void main(String[] args) {
 		DadosImportados data;
 		try {
-			data = carregarArquivo("trab-so1-teste1 SR");
+			data = carregarArquivo("trab-so1-teste4 SR");
 		} catch (IOException|ExceptionInInitializerError e) {
 			e.printStackTrace();
 			return;
@@ -45,7 +45,7 @@ class App {
                 .average()
                 .ifPresent(v -> print("\ntempo medio de respotas: " + v));
 
-        print("");
+//        print("");
 //        round.processosFinalizados
 //                .stream()
 //                .sorted(Comparator.comparingInt(e -> e.codigo))
